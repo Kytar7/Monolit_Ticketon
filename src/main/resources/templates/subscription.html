@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Подписка - Online Theater</title>
+</head>
+<body>
+    <!-- Заголовок -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h1 class="display-4">Выберите свой тариф</h1>
+            <p class="lead">Смотрите любимые фильмы и сериалы без ограничений</p>
+        </div>
+    </section>
+
+    <!-- Тарифы -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="plan : ${plans}">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h3 class="card-title" th:text="${plan.name}">Название тарифа</h3>
+                            <div class="display-4 my-4" th:text="${'$' + plan.price}">$9.99</div>
+                            <p class="text-muted" th:text="${plan.duration + ' дней'}">30 дней</p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Доступ ко всем фильмам</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Доступ ко всем сериалам</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Просмотр без рекламы</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>HD качество</li>
+                            </ul>
+                            <form th:action="@{/subscription/process}" method="post" class="mt-4">
+                                <input type="hidden" name="planId" th:value="${plan.id}">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Выбрать тариф</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Преимущества подписки</h2>
+            <div class="row">
+                <div class="col-md-3 text-center mb-4">
+                    <i class="fas fa-film fa-3x mb-3 text-primary"></i>
+                    <h4>Большая библиотека</h4>
+                    <p>Тысячи фильмов и сериалов в высоком качестве</p>
+                </div>
+                <div class="col-md-3 text-center mb-4">
+                    <i class="fas fa-mobile-alt fa-3x mb-3 text-primary"></i>
+                    <h4>Смотрите где угодно</h4>
+                    <p>Доступ на всех устройствах</p>
+                </div>
+                <div class="col-md-3 text-center mb-4">
+                    <i class="fas fa-clock fa-3x mb-3 text-primary"></i>
+                    <h4>Без рекламы</h4>
+                    <p>Смотрите без перерывов</p>
+                </div>
+                <div class="col-md-3 text-center mb-4">
+                    <i class="fas fa-download fa-3x mb-3 text-primary"></i>
+                    <h4>Офлайн просмотр</h4>
+                    <p>Скачивайте контент для просмотра без интернета</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Часто задаваемые вопросы</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Как отменить подписку?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Вы можете отменить подписку в любой момент в настройках вашего аккаунта. Доступ к контенту будет сохранен до конца оплаченного периода.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Какие способы оплаты доступны?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Мы принимаем все основные кредитные карты, PayPal и другие популярные способы оплаты.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Можно ли смотреть на нескольких устройствах?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Да, вы можете смотреть контент одновременно на двух устройствах.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Главная - Online Theater</title>
+</head>
+<body>
+    <!-- Hero секция -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4">Добро пожаловать в Online Theater</h1>
+            <p class="lead">Смотрите лучшие фильмы и сериалы в любое время и в любом месте</p>
+            <a href="/subscription" class="btn btn-primary btn-lg mt-3">Начать просмотр</a>
+        </div>
+    </section>
+
+    <!-- Популярные фильмы -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Популярные фильмы</h2>
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="movie : ${popularMovies}">
+                    <div class="card movie-card">
+                        <img th:src="${movie.posterUrl}" class="card-img-top" alt="Movie Poster">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${movie.title}">Название фильма</h5>
+                            <p class="card-text" th:text="${movie.description}">Описание фильма</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary" th:text="${movie.genre.name}">Жанр</span>
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-outline-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Популярные сериалы -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4">Популярные сериалы</h2>
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="series : ${popularSeries}">
+                    <div class="card movie-card">
+                        <img th:src="${series.posterUrl}" class="card-img-top" alt="Series Poster">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${series.title}">Название сериала</h5>
+                            <p class="card-text" th:text="${series.description}">Описание сериала</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary" th:text="${series.genre.name}">Жанр</span>
+                                <a th:href="@{/series/{id}(id=${series.id})}" class="btn btn-outline-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества подписки -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Почему выбирают нас</h2>
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-film fa-3x mb-3 text-primary"></i>
+                    <h4>Большая библиотека</h4>
+                    <p>Тысячи фильмов и сериалов в высоком качестве</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-mobile-alt fa-3x mb-3 text-primary"></i>
+                    <h4>Смотрите где угодно</h4>
+                    <p>Доступ на всех устройствах</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-clock fa-3x mb-3 text-primary"></i>
+                    <h4>Без рекламы</h4>
+                    <p>Смотрите без перерывов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

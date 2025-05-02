@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>История подписок - Online Theater</title>
+</head>
+<body>
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">История подписок</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Тариф</th>
+                                    <th>Дата начала</th>
+                                    <th>Дата окончания</th>
+                                    <th>Статус</th>
+                                    <th>Сумма</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="subscription : ${subscriptions}">
+                                    <td th:text="${subscription.plan.name}">Название тарифа</td>
+                                    <td th:text="${#temporals.format(subscription.startDate, 'dd.MM.yyyy')}">01.01.2024</td>
+                                    <td th:text="${#temporals.format(subscription.endDate, 'dd.MM.yyyy')}">31.01.2024</td>
+                                    <td>
+                                        <span th:if="${subscription.active}" class="badge bg-success">Активна</span>
+                                        <span th:unless="${subscription.active}" class="badge bg-secondary">Завершена</span>
+                                    </td>
+                                    <td th:text="${'$' + subscription.plan.price}">$9.99</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопка отмены текущей подписки -->
+            <div class="mt-4" th:if="${currentSubscription != null && currentSubscription.active}">
+                <form th:action="@{/subscription/cancel}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger" 
+                            onclick="return confirm('Вы уверены, что хотите отменить подписку?')">
+                        Отменить текущую подписку
+                    </button>
+                </form>
+            </div>
+
+            <!-- Кнопка оформления новой подписки -->
+            <div class="mt-4" th:unless="${currentSubscription != null && currentSubscription.active}">
+                <a href="/subscription" class="btn btn-primary">Оформить новую подписку</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 
