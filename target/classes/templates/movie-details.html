@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${movie.title + ' - Online Theater'}">Название фильма - Online Theater</title>
+</head>
+<body>
+    <!-- Детальная информация о фильме -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Постер фильма -->
+                <div class="col-md-4">
+                    <img th:src="${movie.posterUrl}" class="img-fluid rounded" alt="Movie Poster">
+                </div>
+                <!-- Информация о фильме -->
+                <div class="col-md-8">
+                    <h1 class="mb-3" th:text="${movie.title}">Название фильма</h1>
+                    <div class="mb-3">
+                        <span class="badge bg-primary me-2" th:text="${movie.genre.name}">Жанр</span>
+                        <span class="badge bg-secondary me-2" th:text="${movie.releaseYear}">Год</span>
+                        <span class="badge bg-info" th:text="${movie.duration + ' мин'}">Длительность</span>
+                    </div>
+                    <p class="lead" th:text="${movie.description}">Описание фильма</p>
+                    <div class="mb-4">
+                        <h5>Режиссер</h5>
+                        <p th:text="${movie.director}">Режиссер</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5>В ролях</h5>
+                        <p th:text="${movie.cast}">Актеры</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5>Рейтинг</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="me-2">
+                                <i class="fas fa-star text-warning"></i>
+                                <span th:text="${movie.rating}">8.5</span>
+                            </div>
+                            <span class="text-muted" th:text="${movie.reviewCount + ' отзывов'}">100 отзывов</span>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg" th:if="${isSubscribed}">
+                            <i class="fas fa-play me-2"></i>Смотреть
+                        </button>
+                        <a href="/subscription" class="btn btn-primary btn-lg" th:unless="${isSubscribed}">
+                            <i class="fas fa-crown me-2"></i>Оформить подписку
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Отзывы -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h2>Отзывы</h2>
+                    <div class="card mb-4" th:each="review : ${movie.reviews}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="card-title" th:text="${review.user.username}">Имя пользователя</h5>
+                                <div>
+                                    <i class="fas fa-star text-warning" th:each="i : ${#numbers.sequence(0, review.rating - 1)}"></i>
+                                </div>
+                            </div>
+                            <p class="card-text" th:text="${review.comment}">Текст отзыва</p>
+                            <small class="text-muted" th:text="${#temporals.format(review.createdAt, 'dd.MM.yyyy')}">Дата</small>
+                        </div>
+                    </div>
+
+                    <!-- Форма добавления отзыва -->
+                    <div class="card" th:if="${isSubscribed}">
+                        <div class="card-body">
+                            <h5 class="card-title">Оставить отзыв</h5>
+                            <form th:action="@{/movies/{id}/reviews(id=${movie.id})}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">Оценка</label>
+                                    <div class="rating">
+                                        <input type="radio" name="rating" value="5" id="star5" required>
+                                        <label for="star5"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" value="4" id="star4">
+                                        <label for="star4"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" value="3" id="star3">
+                                        <label for="star3"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" value="2" id="star2">
+                                        <label for="star2"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" value="1" id="star1">
+                                        <label for="star1"><i class="fas fa-star"></i></label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment" class="form-label">Ваш отзыв</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ddd;
+            padding: 0 0.1rem;
+        }
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffd700;
+        }
+    </style>
+</body>
+</html> 

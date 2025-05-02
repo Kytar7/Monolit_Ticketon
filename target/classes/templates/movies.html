@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Фильмы - Online Theater</title>
+</head>
+<body>
+    <!-- Фильтры -->
+    <section class="py-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <select class="form-select" id="genreFilter">
+                        <option value="">Все жанры</option>
+                        <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}">Жанр</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="yearFilter">
+                        <option value="">Все годы</option>
+                        <option th:each="year : ${years}" th:value="${year}" th:text="${year}">Год</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Поиск фильмов..." id="searchInput">
+                        <button class="btn btn-primary" type="button">Поиск</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Список фильмов -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="movie : ${movies}">
+                    <div class="card movie-card">
+                        <img th:src="${movie.posterUrl}" class="card-img-top" alt="Movie Poster">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${movie.title}">Название фильма</h5>
+                            <p class="card-text" th:text="${movie.description}">Описание фильма</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge bg-primary" th:text="${movie.genre.name}">Жанр</span>
+                                    <span class="badge bg-secondary" th:text="${movie.releaseYear}">Год</span>
+                                </div>
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn btn-outline-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            <nav th:if="${totalPages > 1}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/movies(page=${currentPage - 1})}">Предыдущая</a>
+                    </li>
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/movies(page=${pageNum})}" th:text="${pageNum + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/movies(page=${currentPage + 1})}">Следующая</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <script>
+        // Фильтрация по жанру
+        document.getElementById('genreFilter').addEventListener('change', function() {
+            const genreId = this.value;
+            window.location.href = `/movies?genre=${genreId}`;
+        });
+
+        // Фильтрация по году
+        document.getElementById('yearFilter').addEventListener('change', function() {
+            const year = this.value;
+            window.location.href = `/movies?year=${year}`;
+        });
+
+        // Поиск
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const searchQuery = this.value;
+                window.location.href = `/movies?search=${searchQuery}`;
+            }
+        });
+    </script>
+</body>
+</html> 
